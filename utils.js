@@ -31,19 +31,19 @@ function assign(target) {
 }
 
 //bind is a form of curry
-function bind(context) {
+function bind(toThis) {
   if (typeof this !== "function") {
     throw TypeError("type error, not a function");
   }
   var toThis = this,
-    baseArgs = Array.prototype.slice.call(arguments, 1),
-    Func = function() {}, //empty function use for prototype inherit
-    FinalFunc = function() {
-      return toThis.apply(
-        Func.isPrototypeOf(this.prototype) ? this : toThis,
-        Array.prototype.concat.apply(baseArgs, arguments)
-      );
-    };
+  baseArgs = Array.prototype.slice.call(arguments, 1),
+  Func = function() {}, //empty function use for prototype inherit
+  FinalFunc = function() {
+    return toThis.apply(
+      Func.isPrototypeOf(this.prototype) ? this : toThis,
+      Array.prototype.concat.apply(baseArgs, arguments)
+    );
+  };
 
   //if this called with new operator, well use this instead of toThis.
   if (this.prototype) {

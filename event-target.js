@@ -15,6 +15,14 @@ EventTarget.prototype = {
     return funcBound;
   },
 
+  once: function(type, handler, context) {
+    let handlerOnce = function() {
+      handler.apply(this, arguments);
+      this.off(type, handler);
+    }
+    return this.on(type, handlerOnce, context);
+  },
+
   emit: function(event) {
     if (!this.target) {
       event.target = this;
